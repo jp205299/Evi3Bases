@@ -1,0 +1,144 @@
+import pymongo
+
+
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client["Libreria"]
+
+#Data
+autores = [
+    {"Autor-id": 1, "Nombre": "Naomi Novik", "Nacionalidad": "Estadounidense", "Numero de libros": 3},
+    {"Autor-id": 2, "Nombre": "Will Wight", "Nacionalidad": "Estadounidense", "Numero de libros": 12},
+    {"Autor-id": 3, "Nombre": "John Bierce", "Nacionalidad": "Estadounidense", "Numero de libros": 7},
+    {"Autor-id": 4, "Nombre": "J. R. R. Tolkien", "Nacionalidad": "Britanico", "Numero de libros": 4},
+    {"Autor-id": 5, "Nombre": "Gabriel García Márquez", "Nacionalidad": "Colombiano", "Numero de libros": 1},
+    {"Autor-id": 6, "Nombre": "Pierce Brown", "Nacionalidad": "Estadounidense", "Numero de libros": 6},
+    {"Autor-id": 7, "Nombre": "Christopher Buehlman", "Nacionalidad": "Estadounidense", "Numero de libros": 1}
+]
+
+libros = [
+    {"titulo": "A deadly education", "autor_Id": 1, "Ano de publicacion": 2020, "genero": "Fantasia Juvenil"},
+    {"titulo": "The last garduate", "autor_Id": 1, "Ano de publicacion": 2021, "genero": "Fantasia Juvenil"},
+    {"titulo": "The golden enclave", "autor_Id": 1, "Ano de publicacion": 2022, "genero": "Fantasia Juvenil"},
+    {"titulo": "Unsouled", "autor_Id": 2, "Ano de publicacion": 2016, "genero": "Fantasia/SciFi"},
+    {"titulo": "Soulsmith", "autor_Id": 2, "Ano de publicacion": 2016, "genero": "Fantasia/SciFi"},
+    {"titulo": "Blackflame", "autor_Id": 2, "Ano de publicacion": 2017, "genero": "Fantasia/SciFi"},
+    {"titulo": "Skysworn", "autor_Id": 2, "Ano de publicacion": 2017, "genero": "Fantasia/SciFi"},
+    {"titulo": "Ghostwater", "autor_Id": 2, "Ano de publicacion": 2018, "genero": "Fantasia/SciFi"},
+    {"titulo": "Underlord", "autor_Id": 2, "Ano de publicacion": 2019, "genero": "Fantasia/SciFi"},
+    {"titulo": "Uncrowned", "autor_Id": 2, "Ano de publicacion": 2019, "genero": "Fantasia/SciFi"},
+    {"titulo": "Wonterstell", "autor_Id": 2, "Ano de publicacion": 2020, "genero": "Fantasia/SciFi"},
+    {"titulo": "Bloodline", "autor_Id": 2, "Ano de publicacion": 2021, "genero": "Fantasia/SciFi"},
+    {"titulo": "Reaper", "autor_Id": 2, "Ano de publicacion": 2021, "genero": "Fantasia/SciFi"},
+    {"titulo": "Dreadgod", "autor_Id": 2, "Ano de publicacion": 2022, "genero": "Fantasia/SciFi"},
+    {"titulo": "Waybound", "autor_Id": 2, "Ano de publicacion": 2023, "genero": "Fantasia/SciFi"},
+    {"titulo": "Into the Labyrinth", "autor_Id": 3, "Ano de publicacion": 2018, "genero": "Prog Fantasy"},
+    {"titulo": "Jewel of the Endless Erg", "autor_Id": 3, "Ano de publicacion": 2019, "genero": "Prog Fantasy"},
+    {"titulo": "A Traitor in Skyhold", "autor_Id": 3, "Ano de publicacion": 2019, "genero": "Prog Fantasy"},
+    {"titulo": "The Lost City of Ithos", "autor_Id": 3, "Ano de publicacion": 2020, "genero": "Prog Fantasy"},
+    {"titulo": "The Siege of Skyhold", "autor_Id": 3, "Ano de publicacion": 2021, "genero": "Prog Fantasy"},
+    {"titulo": "Tongue Eater", "autor_Id": 3, "Ano de publicacion": 2022, "genero": "Prog Fantasy"},
+    {"titulo": "The Last Echo of the Lord of Bells", "autor_Id": 3, "Ano de publicacion": 2023, "genero": "Prog Fantasy"},
+    {"titulo": "The Hobbit", "autor_Id": 4, "Ano de publicacion": 1937, "genero": "Fantasia Infantil"},
+    {"titulo": "The Fellowship of the Ring", "autor_Id": 4, "Ano de publicacion": 1954, "genero": "Alta Fantasia"},
+    {"titulo": "The Two Towers", "autor_Id": 4, "Ano de publicacion": 1954, "genero": "Alta Fantasia"},
+    {"titulo": "The Return of the King", "autor_Id": 4, "Ano de publicacion": 1955, "genero": "Alta Fantasia"},
+    {"titulo": "100 anos de soledad", "autor_Id": 5, "Ano de publicacion": 1967, "genero": "Alta Fantasia"},
+    {"titulo": "Red Rising", "autor_Id": 6, "Ano de publicacion": 2014, "genero": "Scifi"},
+    {"titulo": "Golden Son", "autor_Id": 6, "Ano de publicacion": 2015, "genero": "Scifi"},
+    {"titulo": "Morning Star", "autor_Id": 6, "Ano de publicacion": 2016, "genero": "Scifi"},
+    {"titulo": "Iron Gold", "autor_Id": 6, "Ano de publicacion": 2018, "genero": "Scifi"},
+    {"titulo": "Dark Age", "autor_Id": 6, "Ano de publicacion": 2019, "genero": "Scifi"},
+    {"titulo": "Lightbringer", "autor_Id": 6, "Ano de publicacion": 2023, "genero": "Scifi"},
+    {"titulo": "The Blacktongue thief", "autor_Id": 7, "Ano de publicacion": 2021, "genero": "Fantasia"}
+]
+
+def carga_inicial():
+    
+    if db["Autores"].count_documents({}) == 0:
+        db["Autores"].insert_many(list(autores))  
+    if db["Libros"].count_documents({}) == 0:
+        db["Libros"].insert_many(list(libros))
+
+def insertar_libro():
+    try:
+        titulo = input("Titulo: ")
+        autor_id = int(input("Autor-id: "))
+        anio = int(input("Ano de publicacion: "))
+        genero = input("Genero: ")
+        db["Libros"].insert_one({
+            "titulo": titulo,
+            "autor_Id": autor_id,
+            "Ano de publicacion": anio,
+            "genero": genero
+        })
+        db["Autores"].update_one(
+            {"Autor-id": autor_id},
+            {"$inc": {"Numero de libros": 1}}
+        )
+        print("Libro insertado y contador de autor actualizado.")
+    except Exception as e:
+        print("Error:", e)
+
+def eliminar_libro():
+    titulo = input("Introduce el título del libro a eliminar: ")
+    libro = db["Libros"].find_one({"titulo": {"$regex": titulo, "$options": "i"}})
+    if libro:
+        autor_id = libro.get("autor_Id")
+        db["Libros"].delete_one({"_id": libro["_id"]})
+        db["Autores"].update_one(
+            {"Autor-id": autor_id},
+            {"$inc": {"Numero de libros": -1}}
+        )
+        print("Libro eliminado y contador de autor actualizado.")
+    else:
+        print("Libro no encontrado.")
+
+def buscar_autor():
+    nombre = input("Introduce el nombre del autor a buscar: ")
+    for autor in db["Autores"].find({"Nombre": {"$regex": nombre, "$options": "i"}}):
+        print(autor)
+
+def buscar_libro():
+    titulo = input("Introduce el titulo del libro a buscar: ")
+    for libro in db["Libros"].find({"titulo": {"$regex": titulo, "$options": "i"}}):
+        print(libro)
+
+def buscar_libro_y_autor():
+    titulo = input("Introduce el titulo del libro: ")
+    libro = db["Libros"].find_one({"titulo": {"$regex": titulo, "$options": "i"}})
+    if libro:
+        autor = db["Autores"].find_one({"Autor-id": libro["autor_Id"]})
+        print("Libro:", libro)
+        print("Autor relacionado:", autor)
+    else:
+        print("Libro no encontrado.")
+
+def menu():
+    while True:
+        print("\n--- Menu ---")
+        print("1. Insertar nuevo libro")
+        print("2. Eliminar libro")
+        print("3. Buscar autor por nombre")
+        print("4. Buscar libro por titulo")
+        print("5. Buscar libro y mostrar autor relacionado")
+        print("6. Salir")
+        op = input("Elige una opción: ")
+        if op == "1":
+            insertar_libro()
+        elif op == "2":
+            eliminar_libro()
+        elif op == "3":
+            buscar_autor()
+        elif op == "4":
+            buscar_libro()
+        elif op == "5":
+            buscar_libro_y_autor()
+        elif op == "6":
+            print("Fin")
+            break
+        else:
+            print("No vale")
+
+if __name__ == "__main__":
+    carga_inicial()
+    menu()
