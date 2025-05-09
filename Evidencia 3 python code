@@ -115,7 +115,7 @@ def buscar_libro_y_autor():
 
 def menu():
     while True:
-        print("\n--- Menu ---")
+        print("\n Menu ")
         print("1. Insertar nuevo libro")
         print("2. Eliminar libro")
         print("3. Buscar autor por nombre")
